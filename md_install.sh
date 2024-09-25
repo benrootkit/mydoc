@@ -107,9 +107,6 @@ sleep 2
 
 mdatp config real-time-protection --value enabled
 mdatp config behavior-monitoring --value  enabled
-echo "MDATP scan started in the background. "
-
-
 
 # 安装rasp
 curl -LO https://raw.githubusercontent.com/benrootkit/mydoc/refs/heads/main/rasp.tgz
