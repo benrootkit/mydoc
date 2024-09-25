@@ -27,6 +27,9 @@ if [[ "$install_env" != "npt" && "$install_env" != "inpt" && "$install_env" != "
     exit 1
 fi
 
+# 删除yum.pid
+rm -f /var/run/yum.pid
+
 
 # 处理 CentOS 系统的函数
 handle_centos() {
