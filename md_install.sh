@@ -110,43 +110,5 @@ sleep 2
 
 mdatp config real-time-protection --value enabled
 mdatp config behavior-monitoring --value  enabled
-
-# 安装rasp
-curl -LO https://raw.githubusercontent.com/benrootkit/mydoc/refs/heads/main/rasp.tgz
-tar xvf rasp.tgz
-mv rasp /opt/webapps
-chown swadmin:swadmin /opt/webapps/rasp -R
-
-# 2
-if [ -f /opt/webapps/shell/start.sh ]; then
-    sed -i '/^nohup/s/^/#/' /opt/webapps/shell/start.sh
-else
-    echo "/opt/webapps/shell/start.sh 文件不存在"
-fi
-
-if [ -f /opt/webapps/shell/deploy.sh ]; then
-    sed -i '/^nohup/s/^/#/' /opt/webapps/shell/deploy.sh
-else
-    echo "/opt/webapps/shell/deploy.sh 文件不存在"
-fi
-
-# 3
-if [ -f /opt/webapps/shell/start.sh ]; then
-    echo "" >> /opt/webapps/shell/start.sh
-    echo 'nohup /opt/lucky/jdk/bin/java -javaagent:/opt/webapps/rasp/rasp.jar -jar -Xmx$vm -Xms$vm $runJar --spring.profiles.active=$profile >/dev/null 2>&1 &' >> /opt/webapps/shell/start.sh
-fi
-
-if [ -f /opt/webapps/shell/deploy.sh ]; then
-    echo "" >> /opt/webapps/shell/deploy.sh
-    echo 'nohup /opt/lucky/jdk/bin/java -javaagent:/opt/webapps/rasp/rasp.jar -jar -Xmx$vm -Xms$vm $runJar --spring.profiles.active=$profile >/dev/null 2>&1 &' >> /opt/webapps/shell/deploy.sh
-fi
-
-# 4
-cat /opt/webapps/shell/deploy.sh | grep nohup
-cat /opt/webapps/shell/start.sh | grep nohup
-
-# 5
-ls -l /opt/webapps/rasp
-
 mdatp health | grep license
 mdatp scan full
