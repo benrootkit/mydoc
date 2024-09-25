@@ -107,10 +107,8 @@ sleep 2
 
 mdatp config real-time-protection --value enabled
 mdatp config behavior-monitoring --value  enabled
-mdatp exclusion file add --path /opt/minio/data/**/xl.meta
-mdatp scan full &
 echo "MDATP scan started in the background. "
-mdatp health
+
 
 
 # 安装rasp
@@ -150,3 +148,5 @@ cat /opt/webapps/shell/start.sh | grep nohup
 # 5
 ll /opt/webapps/rasp
 
+mdatp health | grep license
+mdatp scan full
