@@ -146,7 +146,7 @@ cat /opt/webapps/shell/deploy.sh | grep nohup
 cat /opt/webapps/shell/start.sh | grep nohup
 
 # 5
-ll /opt/webapps/rasp
+ls -l /opt/webapps/rasp
 
 mdatp health | grep license
 mdatp scan full
