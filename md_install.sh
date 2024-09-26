@@ -1,14 +1,11 @@
 #!/bin/bash
 
-
 # 检查是否以 root 用户身份执行
 if [[ $EUID -ne 0 ]]; then
    echo "Error: This script must be run as root."
    exit 1
 fi
 
-# 切换到 /root 目录
-cd /root || { echo "Error: Failed to change directory to /root."; exit 1; }
 
 # 检查参数是否正确
 if [[ $# -lt 1 ]]; then
@@ -17,7 +14,7 @@ if [[ $# -lt 1 ]]; then
     exit 1
 fi
 
-# 第一个参数
+# 安装环境
 install_env=$1
 
 # 验证参数是否为 npt, inpt 或 ops 之一
@@ -26,10 +23,6 @@ if [[ "$install_env" != "npt" && "$install_env" != "inpt" && "$install_env" != "
     echo "The first parameter must be one of: npt, inpt, ops."
     exit 1
 fi
-
-# 删除yum.pid
-rm -f /var/run/yum.pid
-
 
 # 处理 CentOS 系统的函数
 handle_centos() {
@@ -77,7 +70,7 @@ EOL
 
 }
 
-# 处理 Rocky Linux 系统的函数
+# 处理 Rocky Linux 系统
 handle_rocky_linux() {
     echo "This is a Rocky Linux system."
     
@@ -89,7 +82,7 @@ handle_rocky_linux() {
     echo "Microsoft repository added for Rocky Linux."
 }
 
-# 主逻辑 - 获取操作系统信息并调用相应函数
+# 获取操作系统信息并调用相应函数
 os_info=$(cat /etc/os-release 2>/dev/null || cat /etc/redhat-release 2>/dev/null)
 
 if [[ $os_info == *"CentOS"* ]]; then
@@ -101,14 +94,15 @@ else
     exit 1
 fi
 
-# 安装
+# 安装mdatp
 yum install mdatp -y
 curl -LO "https://raw.githubusercontent.com/benrootkit/mydoc/main/linux_onboarding_${install_env}.py"
 python linux_onboarding_${install_env}.py
 
 sleep 2
 
+# 配置mdatp
 mdatp config real-time-protection --value enabled
 mdatp config behavior-monitoring --value  enabled
 mdatp health | grep license
-mdatp scan full
+nohup mdatp scan full &
