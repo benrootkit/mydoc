@@ -10,7 +10,7 @@ fi
 # 检查参数是否正确
 if [[ $# -lt 1 ]]; then
     echo "Error: Missing required parameter."
-    echo "Usage: $0 {npt|inpt|ops}"
+    echo "Usage: $0 {npt|inpt|ops|ks}"
     exit 1
 fi
 
@@ -18,7 +18,7 @@ fi
 install_env=$1
 
 # 验证参数是否为 npt, inpt 或 ops 之一
-if [[ "$install_env" != "npt" && "$install_env" != "inpt" && "$install_env" != "ops" ]]; then
+if [[ "$install_env" != "npt" && "$install_env" != "inpt" && "$install_env" != "ops"  && "$install_env" != "ks" ]]; then
     echo "Error: Invalid parameter '$install_env'."
     echo "The first parameter must be one of: npt, inpt, ops."
     exit 1
